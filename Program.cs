@@ -2,6 +2,7 @@
 
 List<string> dobasok = new List<string>();
 List<string> osvenyek = new List<string>();
+List<int> jatekosok = new List<int>();
 dobasok = File.ReadAllLines("dobasok.txt").ToList();
 osvenyek = File.ReadAllLines("osvenyek.txt").ToList();
 dobasok = dobasok[0].Split(" ").ToList();
@@ -13,23 +14,14 @@ Console.WriteLine($"A dobások száma: {dobasok.Count} \n Az ösvények száma: 
 
 //3.feladat
 Console.WriteLine();
-int leghoszabbOsvenyIndex = 0;
-int osvenyHossz = osvenyek[0].Length;
-for (int i = 1; i < osvenyek.Count; i++)
-{
-    if (osvenyek[leghoszabbOsvenyIndex].Length < osvenyek[i].Length)
-    {
-        leghoszabbOsvenyIndex = i;
-    }
-}
-osvenyHossz = osvenyek[leghoszabbOsvenyIndex].Length;
+int leghoszabbOsvenyIndex = osvenyek.IndexOf(osvenyek.OrderByDescending(s => s.Length).First()) + 1;
+int osvenyHossz = osvenyek.Max(s => s.Length);
 Console.WriteLine("3. feladat");
-Console.WriteLine($"Az egyik leghosszabb a(z) {leghoszabbOsvenyIndex+1}. ösvény, hossza:{osvenyHossz}");
+Console.WriteLine($"Az egyik leghosszabb a(z) {leghoszabbOsvenyIndex}. ösvény, hossza: {osvenyHossz}");
 
 //4.feladat
-Console.WriteLine();
-Console.Write("Adja meg egy ösvény sorszámát! ");
-int sorszam = int.Parse(Console.ReadLine())-1;
+Console.Write("\nAdja meg egy ösvény sorszámát! ");
+int sorszam = int.Parse(Console.ReadLine()) - 1;
 Console.Write("Adja meg a játékosok számát! ");
 int jatekosokSzama = int.Parse(Console.ReadLine());
 
@@ -40,7 +32,7 @@ while (true)
     {
         Console.WriteLine("Nem megfelelő szám!");
         Console.Write("Adja meg egy ösvény sorszámát! ");
-        sorszam = int.Parse(Console.ReadLine())-1;
+        sorszam = int.Parse(Console.ReadLine()) - 1;
     }
     if (sorszam <= osvenyek.Count && sorszam >= 0)
     {
@@ -48,8 +40,6 @@ while (true)
     }
 
 }
-
-
 
 while (true)
 {
@@ -64,3 +54,37 @@ while (true)
         break;
     }
 }
+
+//5.feladat
+Console.WriteLine("\n5. feladat");
+string osvenyVizsgalat = osvenyek[sorszam];
+int M = osvenyVizsgalat.Count(x => x == 'M');
+int V = osvenyVizsgalat.Count(x => x == 'V');
+int E = osvenyVizsgalat.Count(x => x == 'E');
+
+if (M > 0)
+{
+    Console.WriteLine($"M: {M} darab");
+}
+if (V > 0)
+{
+    Console.WriteLine($"V: {V} darab");
+}
+if (E > 0)
+{
+    Console.WriteLine($"E: {E} darab");
+}
+
+//6.feladat
+
+List<string> kulonlegesKarakterek = new List<string>();
+for (int i = 0; i < osvenyVizsgalat.Length; i++)
+{
+    if (osvenyVizsgalat[i] == 'V' || osvenyVizsgalat[i] == 'E')
+    {
+        kulonlegesKarakterek.Add($"{i}\t{osvenyVizsgalat[i]}");
+    }
+}
+File.WriteAllLines("kulonleges.txt", kulonlegesKarakterek);
+
+//7.feladat
