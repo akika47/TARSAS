@@ -57,10 +57,10 @@ while (true)
 
 //5.feladat
 Console.WriteLine("\n5. feladat");
-string osvenyVizsgalat = osvenyek[sorszam];
-int M = osvenyVizsgalat.Count(x => x == 'M');
-int V = osvenyVizsgalat.Count(x => x == 'V');
-int E = osvenyVizsgalat.Count(x => x == 'E');
+string osvenyMezo = osvenyek[sorszam];
+int M = osvenyMezo.Count(x => x == 'M');
+int V = osvenyMezo.Count(x => x == 'V');
+int E = osvenyMezo.Count(x => x == 'E');
 
 if (M > 0)
 {
@@ -78,13 +78,42 @@ if (E > 0)
 //6.feladat
 
 List<string> kulonlegesKarakterek = new List<string>();
-for (int i = 0; i < osvenyVizsgalat.Length; i++)
+for (int i = 0; i < osvenyMezo.Length; i++)
 {
-    if (osvenyVizsgalat[i] == 'V' || osvenyVizsgalat[i] == 'E')
+    if (osvenyMezo[i] == 'V' || osvenyMezo[i] == 'E')
     {
-        kulonlegesKarakterek.Add($"{i}\t{osvenyVizsgalat[i]}");
+        kulonlegesKarakterek.Add($"{i}\t{osvenyMezo[i]}");
     }
 }
 File.WriteAllLines("kulonleges.txt", kulonlegesKarakterek);
 
 //7.feladat
+Console.WriteLine("\n7. feladat");
+int kor = 0;
+int nyertesJatekos = -1;
+int legutobbiDobas = 0;
+for (int i = 0; i < jatekosokSzama; i++)
+{
+    jatekosok.Add(0);
+}
+while (true)
+{
+    kor++;
+    for (int i = 0; i < jatekosokSzama; i++)
+    {
+        jatekosok[i] += Convert.ToInt32(dobasok[legutobbiDobas]);
+        legutobbiDobas++;
+        if (jatekosok[i] >= osvenyMezo.Length)
+        {
+            nyertesJatekos = i;
+            break;
+        }
+    }
+    if (nyertesJatekos != -1)
+    {
+        break;
+    }
+}
+Console.WriteLine($"A játék a(z) {kor}. körben fejeződött be. A legtávolabb jutó(k) sorszáma: {nyertesJatekos + 1}");
+
+//8.feladat
